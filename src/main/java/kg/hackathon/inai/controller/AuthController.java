@@ -24,11 +24,11 @@ public class AuthController {
 
     private final AuthService authService;
     private final UserRepository repository;
-    @GetMapping({"" })
+    @GetMapping("" )
     public String showProducts(Model model){
         List<User> users = repository.findAll(Sort.by(Sort.Direction.DESC , "id"));
         model.addAttribute("user", users);
-        return "index";
+        return "step-one";
     }
 
 
