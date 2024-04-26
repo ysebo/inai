@@ -15,11 +15,16 @@ public class Petition {
     private Long id;
     private String name;
     private String author;
+    private String country;
+    private String region;
+    private String city;
     @Column(columnDefinition = "text")
     private String description;
     private LocalDateTime createdDate;
+    private String selectedOption;
+    private String additionalInfo;
     private Integer signCount;
-    private String region;
+
 
     @ManyToMany(cascade = CascadeType.ALL)
     private List<User> signedPersons;

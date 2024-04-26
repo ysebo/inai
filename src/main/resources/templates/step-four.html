@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Step Four: Confirmation</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Optional CSS for styling the confirmation page */
+        .container {
+            max-width: 800px;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+
+<body class="container">
+<div class="progress" role="progressbar" aria-label="Example 20px high" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="height: 20px">
+    <div class="progress-bar" style="width: 100%">100%</div>
+</div>
+
+<h1>Step Four: Confirmation</h1>
+<div>
+    <p><strong>Country:</strong> <span th:text="${country}"></span></p>
+    <p><strong>Region:</strong> <span th:text="${region}"></span></p>
+    <p><strong>City:</strong> <span th:text="${city}"></span></p>
+    <p><strong>Selected Option:</strong> <span th:text="${selectedOption}"></span></p>
+    <p><strong>Additional Info:</strong> <span th:text="${additionalInfo}"></span></p>
+</div>
+</body>
+</html>
