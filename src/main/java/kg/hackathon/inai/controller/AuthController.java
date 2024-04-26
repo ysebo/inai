@@ -28,7 +28,7 @@ public class AuthController {
     public String showProducts(Model model){
         List<User> users = repository.findAll(Sort.by(Sort.Direction.DESC , "id"));
         model.addAttribute("user", users);
-        return "step-one";
+        return "loginForm";
     }
 
 

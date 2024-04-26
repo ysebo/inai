@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/petition")
 @AllArgsConstructor
 public class PetitionController {
     @Autowired
