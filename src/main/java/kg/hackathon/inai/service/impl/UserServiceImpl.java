@@ -1,4 +1,6 @@
 package kg.hackathon.inai.service.impl;
 
-public class UserServiceImpl {
+import kg.hackathon.inai.service.UserService;
+
+public class UserServiceImpl implements UserService {
 }
