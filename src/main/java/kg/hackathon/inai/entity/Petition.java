@@ -21,8 +21,6 @@ public class Petition {
     @Column(columnDefinition = "text")
     private String description;
     private LocalDateTime createdDate;
-    private String selectedOption;
-    private String additionalInfo;
     private Integer signCount;
 
 
