@@ -1,4 +1,6 @@
 package kg.hackathon.inai.mapper.impl;
 
-public class UserMapperImpl {
+import kg.hackathon.inai.mapper.UserMapper;
+
+public class UserMapperImpl implements UserMapper {
 }
