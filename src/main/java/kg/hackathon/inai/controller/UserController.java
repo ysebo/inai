@@ -15,7 +15,10 @@ public class UserController {
     private final OpenApiService aiApiService;
     @GetMapping("/openStart")
     public String startOpenApi() {
-        return aiApiService.getResponse("привет");
+        return aiApiService.getResponse("Сделай петицию если человек хочет" +
+                "используй город Бишкек " +
+               " видеокамеры в транспортах " +
+                ".Кто то однажды домогался меня");
     }
 
 }

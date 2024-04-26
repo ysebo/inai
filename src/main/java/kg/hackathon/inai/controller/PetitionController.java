@@ -62,6 +62,7 @@ public class PetitionController {
         return "redirect:/step-four";
     }
 
+
     @GetMapping("/step-four")
     public String showConfirmationPage(HttpSession session, Model model) {
         Optional<Petition> petition = petitionRepository.findById((Long) session.getAttribute("id"));
