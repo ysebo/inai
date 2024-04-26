@@ -1,16 +1,18 @@
 package kg.hackathon.inai.controller;
 
 import jakarta.servlet.http.HttpSession;
-import kg.hackathon.inai.dto.petition.PetitionAdd1;
 import kg.hackathon.inai.entity.Petition;
+import kg.hackathon.inai.exception.NotFoundException;
 import kg.hackathon.inai.repository.PetitionRepository;
 import kg.hackathon.inai.service.PetitionService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
@@ -24,18 +26,18 @@ public class PetitionController {
     }
 
     @PostMapping("")
-    public String stepOne(@RequestParam("country") String country,
-                          @RequestParam("region") String region,
-                          @RequestParam("city") String city,
-                          HttpSession session) {
-        session.setAttribute("country", country);
-        session.setAttribute("region", region);
-        session.setAttribute("city", city);
+    public String stepOnePost() {
         return "redirect:/step-two";
     }
 
     @GetMapping("/step-two")
-    public String stepTwo(){
+    public String stepTwo(@RequestParam("country") String country,
+                          @RequestParam("region") String region,
+                          @RequestParam("city") String city,
+                          @RequestParam("email") String email,
+                          HttpSession session){
+        Long id = petitionService.add_one(country, region, city, email);
+        session.setAttribute("id", id);
         return "step-two";
     }
     @PostMapping("/step-two")
@@ -56,49 +58,22 @@ public class PetitionController {
     @PostMapping("/step-three")
     public String stepThree(@RequestParam("additionalInfo") String additionalInfo,
                             HttpSession session) {
-        session.setAttribute("additionalInfo", additionalInfo);
+        petitionService.add_three(additionalInfo, (Long) session.getAttribute("id"));
         return "redirect:/step-four";
     }
 
     @GetMapping("/step-four")
     public String showConfirmationPage(HttpSession session, Model model) {
-        String country = (String) session.getAttribute("country");
-        String region = (String) session.getAttribute("region");
-        String city = (String) session.getAttribute("city");
-        String selectedOption = (String) session.getAttribute("selectedOption");
-        String additionalInfo = (String) session.getAttribute("additionalInfo");
+        Optional<Petition> petition = petitionRepository.findById((Long) session.getAttribute("id"));
+        if(petition.isEmpty())
+            throw new NotFoundException("Petition not found", HttpStatus.NOT_FOUND);
+        model.addAttribute("country", petition.get().getCountry());
+        model.addAttribute("region", petition.get().getRegion());
+        model.addAttribute("city", petition.get().getCity());
+        model.addAttribute("description", petition.get().getDescription());
 
-
-        Petition petition = new Petition();
-        petition.setCountry(country);
-        petition.setRegion(region);
-        petition.setCity(city);
-        petition.setSelectedOption(selectedOption);
-        petition.setAdditionalInfo(additionalInfo);
-        petitionRepository.save(petition);
-
-        model.addAttribute("country", country);
-        model.addAttribute("region", region);
-        model.addAttribute("city", city);
-        model.addAttribute("selectedOption", selectedOption);
-        model.addAttribute("additionalInfo", additionalInfo);
 
         return "step-four";
-    }
-
-    @PostMapping("/add/1")
-    public void add1(@RequestHeader("Authorization") String token, @RequestBody PetitionAdd1 request){
-        petitionService.add1(token, request);
-    }
-
-    @PostMapping("/add/2")
-    public void add2(@RequestBody PetitionAdd1 request){
-        petitionService.add2(request);
-    }
-
-    @PostMapping("/add/3")
-    public void add3(@RequestBody PetitionAdd1 request){
-        petitionService.add3(request);
     }
 
     @PostMapping("/likeToPetition/{id}")
