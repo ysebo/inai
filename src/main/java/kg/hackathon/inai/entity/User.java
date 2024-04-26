@@ -22,10 +22,11 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String email;
-    private String username;
     private String password;
     private Role role;
 
+    @ManyToMany(mappedBy = "")
+    private List<Petition> signedPetitions;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
