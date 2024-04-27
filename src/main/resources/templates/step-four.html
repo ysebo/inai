@@ -6,10 +6,46 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* Optional CSS for styling the confirmation page */
+        >
+            /* Optional CSS for styling the form */
         .container {
             max-width: 800px;
             margin-top: 50px;
         }
+        .card {
+            margin-bottom: 20px;
+            border: none;
+        }
+        .card-body {
+            position: relative;
+            padding: 30px;
+            border: 2px solid #000; /* Black border */
+            border-radius: 20px; /* Rounded borders */
+        }
+        .card-body::before {
+            content: 'БЕТА';
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background: red;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .btn-primary {
+            background: red;
+            border: none;
+            padding: 10px 30px;
+            margin-top: 20px;
+        }
+        .btn-primary:hover {
+            background: darkred;
+        }
+        .progress-bar {
+            background-color: red;
+        }
+
     </style>
 </head>
 
