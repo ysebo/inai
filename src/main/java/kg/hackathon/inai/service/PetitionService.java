@@ -14,6 +14,6 @@ public interface PetitionService {
 
     Long add_one(String country, String region, String city, String email);
 
-    void add_three(String additionalInfo, Long id);
+    void add_three(String additionalInfo, String name, Long id);
 
 }

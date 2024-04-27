@@ -89,11 +89,12 @@ public class PetitionServiceImpl implements PetitionService {
     }
 
     @Override
-    public void add_three(String additionalInfo, Long id) {
+    public void add_three(String additionalInfo, String name, Long id) {
         Optional<Petition> petition = petitionRepository.findById(id);
         if(petition.isEmpty())
             throw new NotFoundException("Petition not found", HttpStatus.NOT_FOUND);
         petition.get().setDescription(additionalInfo);
+        petition.get().setName(name);
         petitionRepository.save(petition.get());
     }
 

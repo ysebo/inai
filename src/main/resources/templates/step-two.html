@@ -30,7 +30,10 @@
                     <h5 class="card-title">Создать петицию с нуля</h5>
                     <p class="card-text">Точно знаете, что хотите сказать? Тогда составьте текст петиции сами.</p>
                     <input type="hidden" name="selectedOption" value="Create a petition from scratch">
-                    <button type="submit" class="btn btn-primary">Select</button>
+                    <form action="/step-three-1" method="get">
+                        <button type="submit" class="btn btn-primary">Select</button>
+                    </form>
+
                 </div>
             </div>
         </div>
@@ -40,7 +43,9 @@
                     <h5 class="card-title">Создать черновик петиции</h5>
                     <p class="card-text">Создайте текст петиции с помощью искусственного интеллекта OpenAI и внесите в него необходимые изменения.</p>
                     <input type="hidden" name="selectedOption" value="Create a draft petition">
-                    <button type="submit" class="btn btn-primary">Select</button>
+                    <form action="/step-three-2" method="get">
+                        <button type="submit" class="btn btn-primary">Select</button>
+                    </form>
                 </div>
             </div>
         </div>
