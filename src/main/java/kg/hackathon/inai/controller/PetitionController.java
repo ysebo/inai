@@ -54,7 +54,12 @@ public class PetitionController {
             return "redirect:/step-three-2";
         else return "redirect:/step-three-1";
     }
-
+    @GetMapping("/step-three-2")
+    public String stepThree2(){return "step-three-2";}
+    @PostMapping("/step-three-2")
+    public String stepThree2(@RequestParam("additionalInfo") String additionalInfo,@RequestParam("name") String name, HttpSession session){
+        petitionService.add_three(additionalInfo, name, (Long) session.getAttribute("id"));
+        return "redirect:/step-four";}
 
     @GetMapping("/step-three-1")
     public String stepThree(){
@@ -67,7 +72,6 @@ public class PetitionController {
         petitionService.add_three(additionalInfo, name, (Long) session.getAttribute("id"));
         return "redirect:/step-four";
     }
-
 
     @GetMapping("/step-four")
     public String showConfirmationPage(HttpSession session, Model model) {

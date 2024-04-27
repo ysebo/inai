@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Step Two: Additional Information</title>
+    <!-- Include Bootstrap CSS if needed -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Optional CSS for styling the form */
+        .container {
+            max-width: 800px;
+            margin-top: 50px;
+        }
+        .card {
+            margin-bottom: 20px;
+            border: none;
+        }
+        .card-body {
+            position: relative;
+            padding: 30px;
+            border: 2px solid #000; /* Black border */
+            border-radius: 20px; /* Rounded borders */
+        }
+        .card-body::before {
+
+
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background: red;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .btn-primary {
+            background: red;
+            border: none;
+            padding: 10px 30px;
+            margin-top: 20px;
+        }
+        .btn-primary:hover {
+            background: darkred;
+        }
+
+    </style>
+</head>
+
+<body class="container">
+
+<nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container">
+        <a class="navbar-brand" href="#">Marlen.gay</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupported" aria-controls="navbarSupported" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupported">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Создать петицию <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Мои петиции</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Просмотреть петиции</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</nav>
+<h2>Расскажите, что бы вы хотели изменить</h2>
+<h3>Это поможет нам создать черновик петиции.</h3>
+<form action="/step-three-2" method="post">
+    <div class="form-group">
+        <label for="name">Я хочу....</label>
+        <textarea class="form-control" id="name" name="name" required></textarea>
+    </div>
+    <div class="form-group">
+        <label for="additionalInfo">Если вы расскажете личную историю, это сделает вашу петицию более убедительной.</label>
+        <textarea class="form-control" id="additionalInfo" name="additionalInfo" required></textarea>
+    </div>
+    <div class="d-flex justify-content-between">
+        <a th:href="@{/step-two}" class="btn btn-secondary">Back</a>
+
+        <button type="submit" class="btn btn-primary">Next</button>
+    </div>
+
+</form>
+</body>
+</html>
