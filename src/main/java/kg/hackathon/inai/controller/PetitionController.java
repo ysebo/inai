@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -47,18 +48,21 @@ public class PetitionController {
         session.setAttribute("selectedOption", selectedOption);
 
         // Redirect to Step Three
-        return "redirect:/step-three";
+        if(Objects.equals(selectedOption, "Create a petition from scratch"))
+            return "redirect:/step-three-2";
+        else return "redirect:/step-three-1";
     }
 
 
-    @GetMapping("/step-three")
+    @GetMapping("/step-three-1")
     public String stepThree(){
-        return "step-three";
+        return "step-three-1";
     }
-    @PostMapping("/step-three")
+    @PostMapping("/step-three-1")
     public String stepThree(@RequestParam("additionalInfo") String additionalInfo,
+                            @RequestParam("name") String name,
                             HttpSession session) {
-        petitionService.add_three(additionalInfo, (Long) session.getAttribute("id"));
+        petitionService.add_three(additionalInfo, name, (Long) session.getAttribute("id"));
         return "redirect:/step-four";
     }
 
@@ -71,6 +75,7 @@ public class PetitionController {
         model.addAttribute("country", petition.get().getCountry());
         model.addAttribute("region", petition.get().getRegion());
         model.addAttribute("city", petition.get().getCity());
+        model.addAttribute("name", petition.get().getName());
         model.addAttribute("description", petition.get().getDescription());
 
 
