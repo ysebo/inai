@@ -1,5 +1,7 @@
 package kg.hackathon.inai.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,24 +19,49 @@ public class OpenApiService {
 
     @Value("${openai.api.key}")
     private String apiKey;
+public String getResponse(String prompt) {
+    RestTemplate restTemplate = new RestTemplate();
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    headers.setBearerAuth(apiKey);
 
-    public String getResponse(String prompt) {
+    // Build the request payload using a more structured approach
+    String requestBody = buildRequestBody(prompt);
+    HttpEntity<String> request = new HttpEntity<>(requestBody, headers);
+
+    try {
+        ResponseEntity<String> response = restTemplate.postForEntity(apiUrl, request, String.class);
+        return extractContentFromResponse(response.getBody());
+    } catch (HttpClientErrorException e) {
+        e.printStackTrace();
+        return "Ошибка: " + e.getStatusCode() + " - " + e.getResponseBodyAsString();
+    }
+}
+
+    private String buildRequestBody(String prompt) {
+        String escapedPrompt = escapeJson(prompt);
+        return String.format("{\"model\": \"gpt-4\", \"messages\": [{\"role\": \"user\", \"content\": \"%s\"}]}", escapedPrompt);
+    }
+
+    private String escapeJson(String text) {
+        return text.replace("\\", "\\\\")
+                .replace("\"", "\\\"")
+                .replace("\b", "\\b")
+                .replace("\f", "\\f")
+                .replace("\n", "\\n")
+                .replace("\r", "\\r")
+                .replace("\t", "\\t");
+    }
+
+    private String extractContentFromResponse(String jsonResponse) {
         try {
-            RestTemplate restTemplate = new RestTemplate();
-
-            // Adjust the JSON to include the "messages" array
-            String json = "{\"model\": \"gpt-4\", \"messages\": [{\"role\": \"user\", \"content\": \"" + prompt + "\"}]}";
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.set("Authorization", "Bearer " + apiKey);
-
-            HttpEntity<String> request = new HttpEntity<>(json, headers);
-            ResponseEntity<String> response = restTemplate.postForEntity(apiUrl, request, String.class);
-            return response.getBody();
-        } catch (HttpClientErrorException e) {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode rootNode = mapper.readTree(jsonResponse);
+            JsonNode messageNode = rootNode.path("choices").get(0).path("message").path("content");
+            return messageNode.asText();
+        } catch (Exception e) {
             e.printStackTrace();
-            return "Ошибка: " + e.getStatusCode() + " - " + e.getResponseBodyAsString();
+            return "Ошибка при обработке ответа";
         }
     }
 

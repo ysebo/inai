@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import kg.hackathon.inai.entity.Petition;
 import kg.hackathon.inai.exception.NotFoundException;
 import kg.hackathon.inai.repository.PetitionRepository;
+import kg.hackathon.inai.service.OpenApiService;
 import kg.hackathon.inai.service.PetitionService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class PetitionController {
     @Autowired
     private final PetitionService petitionService;
     private final PetitionRepository petitionRepository;
+        private final OpenApiService aiApiService;
     @GetMapping("")
     public String stepOne(){
         return "step-one";
@@ -77,9 +79,28 @@ public class PetitionController {
         model.addAttribute("city", petition.get().getCity());
         model.addAttribute("name", petition.get().getName());
         model.addAttribute("description", petition.get().getDescription());
-
-
-        return "step-four";
+        String ans = aiApiService.getResponse("Проверь данную петицию по этим критериям оценивания: " +
+                "Ясность цели: Петиция должна чётко формулировать свою цель или проблему, которую она решает.\n" +
+                "Законодательная обоснованность: Петиция должна соответствовать действующему законодательству и не нарушать права других лиц.\n" +
+                "Поддержка сообщества: Количество подписей и активность сообщества в поддержку петиции.\n" +
+                "Доказательства и аргументация: Наличие обоснований, фактов и доказательств, подтверждающих заявленные в петиции аргументы.\n" +
+                "Возможность реализации: Оценка реальности и практичности предложенных в петиции решений.\n" +
+                "Использование ресурсов: Анализ, требуют ли предложенные меры значительных финансовых, временных или других ресурсов.\n" +
+                "Оригинальность: Уникальность предложения по сравнению с уже существующими инициативами.\n" +
+                "Социальное воздействие: Влияние реализации петиции на общество, включая потенциальные положительные и отрицательные последствия.\n" +
+                "Прозрачность и открытость: Наличие чёткого понимания того, кто стоит за петицией и как будет использоваться собранная информация.\n" +
+                "Качество изложения: Грамотность, логика изложения и структура текста петиции.\n" +
+                "Эмоциональное воздействие: Способность петиции вызывать эмоциональный отклик у читателей, что может способствовать её распространению.\n" +
+                "Потенциал для масштабирования: Возможность расширения предложенных решений на более широкие группы или регионы.\n" +
+                "Инклюзивность: Учёт интересов различных групп населения, включая меньшинства и уязвимые слои.\n" +
+                "Этичность: Соответствие этическим нормам и принципам.\n" +
+                "Техническая осуществимость: Оценка возможностей реализации петиции с технической точки зрения, включая необходимые изменения в инфраструктуре или технологиях." +
+                "и если она подходит под некоторые из этих критериев, напиши, что петиция \"Хорошая\", в противном случае, \"Плохая\". Повторяю еще раз, ты должен написать просто одно слово" +
+                "Вот данная петиция: " + petition.get().getDescription());
+        System.out.println(ans);
+        if(Objects.equals(ans, "Хорошая"))
+            return "step-four";
+        else return "step-one";
     }
 
     @PostMapping("/likeToPetition/{id}")
