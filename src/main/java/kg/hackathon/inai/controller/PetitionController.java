@@ -56,7 +56,7 @@ public class PetitionController {
 
     @GetMapping("/step-three-1")
     public String stepThree(){
-        return "step-three";
+        return "step-three-1";
     }
     @PostMapping("/step-three-1")
     public String stepThree(@RequestParam("additionalInfo") String additionalInfo,
