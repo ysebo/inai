@@ -19,10 +19,13 @@
 </div>
 <h2>Расскажите, что бы вы хотели изменить</h2>
 <h3>Это поможет нам создать черновик петиции.</h3>
-<form action="/step-three" method="post">
+<form action="/step-three-1" method="post">
     <div class="form-group">
-
-        <label for="additionalInfo">Я хочу.....</label>
+        <label for="name">Заголовок статьи:</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+    </div>
+    <div class="form-group">
+        <label for="additionalInfo">Опишите проблему подробнее</label>
         <textarea class="form-control" id="additionalInfo" name="additionalInfo" required></textarea>
     </div>
     <div class="d-flex justify-content-between">
