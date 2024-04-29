@@ -10,6 +10,7 @@ import kg.hackathon.inai.service.OpenApiService;
 import kg.hackathon.inai.service.PetitionService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -152,7 +154,7 @@ public class PetitionController {
             model.addAttribute("petitionDto" , petitionDto);
         }catch (Exception ex) {
             System.out.println("Exception:" + ex.getMessage());
-            return "redirect:/petitions";
+            return "showAll";
         }
         return "editPetition";
     }
@@ -176,13 +178,19 @@ public class PetitionController {
             petitionRepository.save(petition);
         } catch (Exception ex) {
             System.out.println("Exception:" + ex.getMessage());
-            return "redirect:/petitions";
+            return "redirect:/all";
         }
-        return "redirect:/petitions";
+        return "redirect:/all";
     }
 
     @PostMapping("/likeToPetition/{id}")
     public void likeToPetition(@RequestHeader("Authorization") String token, @PathVariable Long id ){
         petitionService.likeToPetition(token, id);
+    }
+    @GetMapping("/all")
+    public String ShowPetition(Model model){
+        List<Petition>petitions =petitionRepository.findAll(Sort.by(Sort.Direction.DESC , "id"));
+        model.addAttribute("petitions" , petitions);
+        return "showAll";
     }
 }
